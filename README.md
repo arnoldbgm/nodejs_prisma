@@ -1,15 +1,26 @@
-Configuración del proyecto de express
+## Configuración del proyecto de express
+
 Partidos todo empezando por ejecutar el siguiente comando
 
+```bash
 npm init
-Ahora instalamos express
+```
 
+Ahora instalamos  ***express***
+
+```bash
 npm install express
-Ahora instalamos nodemon
+```
 
+Ahora instalamos ***nodemon***
+
+```bash
 npm install --save-dev nodemon
-Para este punto nuestro package.json debe lucir asi:
+```
 
+Para este punto nuestro ***package.json*** debe lucir asi:
+
+```json
 {
   "name": "tutoria_express",
   "version": "1.0.0",
@@ -27,8 +38,11 @@ Para este punto nuestro package.json debe lucir asi:
     "nodemon": "^3.1.4"   //ESTO ES NODEMON
   }
 }
-Ahora para poder usar nodemon debemos de hacer un cambio en el package.json, debemos colocar “dev” : “nodemon app.js” Esto hara que cada vez que queramos levantar nuestro backend solo debamos de colocar en terminal npm run dev , tambien debemos de colocar el "type": "module",
+```
 
+Ahora para poder usar nodemon debemos de hacer un cambio en el package.json, debemos colocar  `“dev” : “nodemon app.js”`  Esto hara que cada vez que queramos levantar nuestro backend solo debamos de colocar en terminal `npm run dev` , tambien debemos de colocar el   `"type": "module",`
+
+```json
 {
   "name": "tutoria_express",
   "version": "1.0.0",
@@ -48,12 +62,15 @@ Ahora para poder usar nodemon debemos de hacer un cambio en el package.json, deb
     "nodemon": "^3.1.4"
   }
 }
-Una vez hecho todo esto pasamos a crear el archivoapp.js, si lo vez esta en la raiz a la misma altura que mi package.json
+```
+
+Una vez hecho todo esto pasamos a crear el archivo`app.js`, si lo vez esta en la raiz a la misma altura que mi `package.json`
 
 ![image](https://github.com/user-attachments/assets/76177d42-bf88-4024-8be1-c3219ddedad0)
 
-Ahora dentro del archivo app.js, copiamos y pegamos el siguiente codigo
+Ahora dentro del archivo **`app.js`**, copiamos  y pegamos el siguiente codigo
 
+```jsx
 import express from "express";
 
 // Aqui inicializo mi aplicacion en express
@@ -71,33 +88,51 @@ try {
 } catch (error) {
   console.log(error);
 }
-Con que te vayas a la terminal y ejecutes npm run dev, habras logrado levantar tu backend usando express
+```
+
+Con que te vayas a la terminal y ejecutes `npm run dev`, habras logrado levantar tu backend usando express
 
 ![image](https://github.com/user-attachments/assets/0671df69-1d80-48e7-9fa8-fc74666c67f3)
 
+## Creación de nuestra Base de datos
 
-Creación de nuestra Base de datos
 Para comenzar con la creación de nuestra Bd, es importante que tengamos instalado prisma dentro de nuestro proyecto, por lo que ejecutaremos el siguiente comando
 
+```bash
 npm install prisma --save-dev
-Ahora ejecutaremos lo siguiente, para poder instalar Prisma ORM
+```
 
+Ahora ejecutaremos lo siguiente, para poder instalar Prisma ORM 
+
+```bash
 npx prisma init 
-Veremos que se nos crearon una carpeta llamada prisma y .env , no tengas miedo
+```
+
+Veremos que se nos crearon una carpeta llamada `prisma` y `.env` , no tengas miedo
 
 ![image](https://github.com/user-attachments/assets/57c7c0cc-e6f7-4f5b-8b33-f1e3ba10f8c5)
 
-
+<aside>
 💡 Es fundamental que comprendas que dentro de la carpeta de `prisma` es donde crearemos nuestra base de datos. El archivo `.env` nos permite especificar la ubicación de nuestra base de datos.
-🔥 IMPORTANTE (usaremos MYSQL) : Ahora nos iremos a mysqlworkbech y crearemos desde ahi una bd, con el comando
 
+</aside>
+
+🔥 ***IMPORTANTE (usaremos MYSQL) :  Ahora nos iremos a mysqlworkbech y crearemos desde ahi una bd, con el comando*** 
+
+```sql
 CREATE DATABASE IF NOT exists mi_base_de_datos;
+```
+
+<aside>
 💡 Lo que hize aqui es crear una base de datos con el `nombe mi_base_de_datos`
-Ahora me ire al archivo .env para configurarlo, pero antes de configurarlo, este es el protocolo de como se configura
+
+</aside>
+
+Ahora me ire al archivo `.env` para configurarlo, pero antes de configurarlo, este es el protocolo de como se configura 
 
 ![image](https://github.com/user-attachments/assets/74ae6456-ed3b-48aa-81a1-12b7221b2327)
 
-
+```jsx
 //Esto significa que solo debo de cambiar =>  mysql://USER:PASSWORD@HOST:PORT/DATABASE
 
 // Asi es como nos viene por defecto
@@ -107,8 +142,11 @@ DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=pub
 // Asi seria en mi caso
 
 DATABASE_URL="mysql://root:root@localhost:3306/mi_base_de_datos"   👍
+```
+
 Genial, ahora vamos, a la carpeta prisma donde cambiaremos el provider
 
+```jsx
 generator client {
   provider = "prisma-client-js"
 }
@@ -133,6 +171,8 @@ model Producto {
   categoriaId Int
   categoria   Categoria @relation(fields: [categoriaId], references: [id])
 }
+```
+
 Lo que hicimos fue modelar la siguiente base de datos.
 
 ![image](https://github.com/user-attachments/assets/02fed100-159b-4e0c-86b3-757d53460155)
@@ -140,23 +180,34 @@ Lo que hicimos fue modelar la siguiente base de datos.
 
 Si tu vas y a tu mysql workbech veras que no tienes ninguna tabla y que tu base de datos esta vacia, y esto se debe porque aun no ejecutaste la migracion correspondiente, esta la debes de ejecutar en tu terminal, con esto ya podras observar tu bd.
 
+```bash
 npx prisma migrate dev 
-Creación de controladores y de rutas
-Ahora haremos la creación de las carpetas controllers y router, tendremos de la siguiente forma nuestro proyecto
+```
+
+## Creación de controladores y de rutas
+
+Ahora haremos la creación de las carpetas `controllers` y `router`, tendremos de la siguiente forma nuestro proyecto
 
 ![image](https://github.com/user-attachments/assets/ff68edc3-a702-4985-95de-ee62815b5031)
 
-
+<aside>
 💡
-Controllers
-En los controllers, se definen todas las funciones lógicas relacionadas con nuestras tablas de base de datos. Estas funciones manejan las operaciones CRUD y otras lógicas de negocio necesarias para interactuar con los datos almacenados.
 
-Routers
-En los routers, se especifican las rutas específicas para las peticiones HTTP que serán manejadas por nuestra aplicación Express. Cada archivo de enrutador define cómo se responderá a cada tipo de solicitud (GET, POST, PUT, DELETE, etc.) y conecta esas rutas con las funciones correspondientes en los controllers.
+### Controllers
 
-Controladores crea el siguiente archivo (controllers/product.controller.js)
+En los **controllers**, se definen todas las funciones lógicas relacionadas con nuestras tablas de base de datos. Estas funciones manejan las operaciones CRUD y otras lógicas de negocio necesarias para interactuar con los datos almacenados.
+
+### Routers
+
+En los **routers**, se especifican las rutas específicas para las peticiones HTTP que serán manejadas por nuestra aplicación Express. Cada archivo de enrutador define cómo se responderá a cada tipo de solicitud (GET, POST, PUT, DELETE, etc.) y conecta esas rutas con las funciones correspondientes en los controllers.
+
+</aside>
+
+### Controladores crea el siguiente archivo (`controllers/product.controller.js`)
+
 Aquí es donde colocarás la lógica para manejar las peticiones HTTP relacionadas con los productos.
 
+```jsx
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -170,9 +221,13 @@ export const getProduct = async (req, res) => {
     data: productsRes,
   });
 };
-Rutas crea el siguiente archivo (routes/product.routes.js)
+```
+
+### Rutas crea el siguiente archivo  (`routes/product.routes.js`)
+
 Aquí defines las rutas específicas y las asocia con los controladores correspondientes.
 
+```jsx
 import { Router } from "express";
 import { getProduct } from "../controllers/product.controller.js";
 
@@ -181,9 +236,13 @@ export const api = Router();
 
 // Aqui estamos declarando la url y asociandolo a un controlador
 api.get("/producto", getProduct);
-Configuración de Express (app.js)
-Finalmente, configura tu aplicación Express en app.js para usar las rutas definidas.
+```
 
+### Configuración de Express (`app.js`)
+
+Finalmente, configura tu aplicación Express en `app.js` para usar las rutas definidas.
+
+```jsx
 import express from "express";
 // Esto es lo nuevo que añadimos para poder usar las rutas que creamos
 import { api as routerApi } from "./routes/product.routes.js";
@@ -200,7 +259,13 @@ app.listen(port, () => {
   console.log(`http://localhost:${port}/`);
 });
 
-Ejercicios con la ORM
+```
+
+---
+
+## Ejercicios con la ORM
+
+```bash
 -- Mocks para Categoria
 INSERT INTO Categoria (nombre) VALUES
   ('Electrónicos'),
@@ -220,3 +285,5 @@ INSERT INTO Producto (nombre, descripcion, precio, categoriaId) VALUES
   ('Vestido de noche', 'Vestido elegante para ocasiones especiales', 89.99, 2),
   ('Sofá seccional', 'Sofá cómodo con diseño modular', 799.99, 3),
   ('Mesa de café', 'Mesa auxiliar para la sala de estar', 149.99, 3);
+
+```
