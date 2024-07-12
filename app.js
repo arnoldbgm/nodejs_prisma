@@ -1,12 +1,12 @@
 import express from "express";
+import { api as routerApi } from "./router/product.routes.js";
 
-// Aqui inicializo mi aplicacion en express
+
 const app = express();
-// Este sera el puerto que va a usar mi backend
 const port = 3000;
 
-// Aqui se ejecutara mi backend
-// Esta parte solo se crea una vez y una vez ya configurada no se vuelve a tocar
+app.use(`/api/v1`, routerApi);
+
 try {
   app.listen(port, () => {
     console.log(`Mi Backend esta funcionando 🔥🎉🦾`);
